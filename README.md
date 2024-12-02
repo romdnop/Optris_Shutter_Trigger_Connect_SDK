@@ -2,7 +2,7 @@
 
 A command line tool to trigger Xi410 camera shutter and save the image to folder provided.
 
-# Prerequisits
+# Prerequisites
 
  - VS 2022 Community with C++ components installed
  - PIX Connect SOftware Installed and running with a suitable camera connected
