@@ -38,20 +38,8 @@ HRESULT WINAPI OnNewFrame(void* pBuffer, FrameMetadata2 *pMetadata)
 {
 	if(frameInitialized && Connected)
 	{
-		/*SetConsoleCursorPosition(hStdout, CursorPosition);
-		printf("Frame counter HW/SW: %d/%d\n", pMetadata->CounterHW, pMetadata->Counter);
-        printf("PIF");
-        for (int i = 0; i < pMetadata->PIFnDI; i++)
-            printf("  DI%d:%d", i + 1, (pMetadata->PIFDI >> i) & 1);
-        for (int i = 0; i < pMetadata->PIFnAI; i++)
-            printf("  AI%d:%d", i + 1, pMetadata->PIFAI[i]);
-        printf("\n");
-		printf("Target-Temp: %3.1f\370C\n", (float)GetTempTarget(0));
-		printf("Flag: |%s|      <-- Hit SPACE to renew flag\n", &s[min(int(pMetadata->FlagState),4)*14]);*/
 		std::string timestamp = GetCurrentTimestamp();
 		printf("Filename: %s\n", timestamp.c_str());
-		//FileSnapshot(0);
-		//Sleep(400);
 		framesReceivedCnt++;	
 	}
 	return 0;
@@ -59,19 +47,15 @@ HRESULT WINAPI OnNewFrame(void* pBuffer, FrameMetadata2 *pMetadata)
 
 HRESULT WINAPI OnFileCommandReady(wchar_t* savedFilePath)
 {
-	//GetPathOfStoredFile(0, savedFilePath, 512);
 	std::string folderPath = "C:\\Users\\User\\Documents\\Imager Data"; // Replace with the actual folder path
-	//std::string destinationFolder = "C:\\Users\\User\\Documents\\Imager Data\\exported"; // Replace with destination path
-	//std::string destinationFolder = "C:\\DestinationFolder"; // Replace with destination folder path
 
-
-		if (CopyFileToPath(WCharToString(savedFilePath), destinationFolder)) {
-			std::cout << "File successfully copied to: " << destinationFolder << std::endl;
-		}
+	if (CopyFileToPath(WCharToString(savedFilePath), destinationFolder)) {
+		std::cout << "File successfully copied to: " << destinationFolder << std::endl;
+	}
 	else {
 		std::cerr << "No files found in the folder or an error occurred." << std::endl;
 	}
-		snaphotSaved = true;
+	snaphotSaved = true;
 	return 0;
 }
 
@@ -159,7 +143,6 @@ int main(int argc, char* argv[])
 
 	snaphotSaved = false;
 	
-
 	while (!snaphotSaved && !Stopped)
 	{
 		ImagerIPCProcessMessages(0);
@@ -180,66 +163,13 @@ int main(int argc, char* argv[])
 		{
 			break;
 		}
-			Sleep(SNAPSHOT_READY_CHECK_STEP);
-			if (snapshotCheckTimeOvf >= MAX_SNAPHOT_DELAY)
-			{
-				break;
-			}
-			snapshotCheckTimeOvf += SNAPSHOT_READY_CHECK_STEP;
-		
+		Sleep(SNAPSHOT_READY_CHECK_STEP);
+		if (snapshotCheckTimeOvf >= MAX_SNAPHOT_DELAY)
+		{
+			break;
+		}
+		snapshotCheckTimeOvf += SNAPSHOT_READY_CHECK_STEP;
 	}
 	ReleaseImagerIPC(0);
 	return 0;
-
-	/*
-	while (!GetAsyncKeyState(VK_ESCAPE) && !Stopped) // loop until ESC is pressed or stopped by server
-	{
-		ImagerIPCProcessMessages(0);
-		if (GetAsyncKeyState(VK_SPACE)) // renew flag if SPACE is pressed
-			RenewFlag(0);
-		if (framesReceivedCnt >= 100)
-		{
-			return 0;
-		}
-		if (snaphotSaved != true)
-		{
-			Sleep(SNAPSHOT_READY_CHECK_STEP);
-			if (snapshotCheckTimeOvf >= MAX_SNAPHOT_DELAY)
-			{
-				return 0;
-			}
-			snapshotCheckTimeOvf += SNAPSHOT_READY_CHECK_STEP;
-		}
-	}
-	*/
-	/*
-	if (RunImagerIPC(0) < 0)
-	{
-		ReleaseImagerIPC(0);
-		printf("\nRun failed! Press Enter to exit...");
-		getchar();
-		return -1;
-	}
-
-    hStdout = GetStdHandle(STD_OUTPUT_HANDLE); 
-	CONSOLE_SCREEN_BUFFER_INFO CSBI;
-	GetConsoleScreenBufferInfo(hStdout, &CSBI); // memorize last cursor pos to repeat output 
-	CursorPosition = CSBI.dwCursorPosition;   
-
-	while(!GetAsyncKeyState(VK_ESCAPE) && !Stopped) // loop until ESC is pressed or stopped by server
-	{
-		ImagerIPCProcessMessages(0);
-		if(GetAsyncKeyState(VK_SPACE)) // renew flag if SPACE is pressed
- 			RenewFlag(0);
-	}
-	printf("\n                    "); // clear last line
-	if(Stopped)
-	{
-		printf("\nIPC stopped by server! Press Enter to exit...");
-		getchar();
-	}
-
-	ReleaseImagerIPC(0);
-	return 0;
-	*/
 }
