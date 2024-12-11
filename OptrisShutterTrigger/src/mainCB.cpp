@@ -134,8 +134,8 @@ int main(int argc, char* argv[])
 	if (RunImagerIPC(0) < 0)
 	{
 		ReleaseImagerIPC(0);
-		printf("\nRun failed! Press Enter to exit...");
-		getchar();
+		//printf("\nRun failed! Press Enter to exit...");
+		//getchar();
 		return -1;
 	}
 
