@@ -23,7 +23,7 @@ Example:
 
 # Usefull links
 
- - [Optris Connect SDK](https://www.optris.com/en-us/products/infrared-cameras/software-development-kits-sdk/)
+ - [Optris Connect SDK](https://optris.com/software/apis-sdks/connect-sdk/)
  - [VS2022 Community](https://visualstudio.microsoft.com/vs/community/)
 
  # IMPORTANT
